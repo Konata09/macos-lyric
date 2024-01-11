@@ -10,7 +10,7 @@ before_install:
   - pip3 install poetry
 
 install: poetry install
-script: python -m touchbar_lyric
+script: python -m macos_lyric
 notifications:
   email:
     on_failure: never

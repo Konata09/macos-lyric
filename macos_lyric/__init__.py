@@ -1,15 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2021-03-14 14:37:35
-# @Author  : Chenghao Mou (mouchenghao@gmail.com)
-
 import html
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
+from loguru import logger
 
 import regex as re
 
-from touchbar_lyric.utility import search_intervals
+from macos_lyric.utility import search_intervals
 
 
 @dataclass
@@ -20,6 +16,7 @@ class Song:
     target_title: str
     target_artists: str
     lyric: str
+    source: str
     lines: Optional[List[Tuple[float, str]]] = None
     intervals: Optional[List[float]] = None
 
@@ -73,7 +70,10 @@ class Song:
             return None
 
         idx = search_intervals(self.intervals, timestamp)
+        logger.debug(f"idx: {idx}")
+
         if idx != -1:
-            return self.lines[idx][-1]
+          logger.debug(f"got: {self.lines[idx][-1].strip()}")
+          return self.lines[idx][-1].strip()
 
         return None

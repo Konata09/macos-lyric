@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2020-03-10 10:54:37
-# @Author  : Chenghao Mou (mouchenghao@gmail.com)
-
 import base64
 import binascii
 import json
@@ -13,7 +8,7 @@ import pyaes
 import requests
 from loguru import logger
 
-from touchbar_lyric import Song
+from macos_lyric import Song
 
 
 class NeteaseRequest:  # pragma: no cover
@@ -24,9 +19,9 @@ class NeteaseRequest:  # pragma: no cover
         {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Charset": "UTF-8,*;q=0.5",
-            "Accept-Encoding": "gzip,deflate,sdch",
+            "Accept-Encoding": "gzip,deflate",
             "Accept-Language": "en-US,en;q=0.8",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0",
             "referer": "http://music.163.com/",
         }
     )
@@ -82,7 +77,7 @@ class NeteaseRequest:  # pragma: no cover
 
     @classmethod
     def request(
-        cls, url: str, data: Dict[str, Any], method: str = "POST"
+            cls, url: str, data: Dict[str, Any], method: str = "POST"
     ) -> Dict[str, Any]:
 
         results = {}
@@ -120,7 +115,7 @@ def netease_music_get_lyric(idx) -> str:
     )
 
 
-def netease_music_search(title: str, artists: str) -> List[Song]:
+async def netease_music_search(title: str, artists: str) -> List[Song]:
     """
     Search from Netease Music with artists and title.
     Parameters
@@ -145,7 +140,7 @@ def netease_music_search(title: str, artists: str) -> List[Song]:
     eparams = {
         "method": "POST",
         "url": "http://music.163.com/api/cloudsearch/pc",
-        "params": {"s": title, "type": 1, "offset": 0, "limit": 30},
+        "params": {"s": title, "type": 1, "offset": 0, "limit": 15},
     }
     data = {"eparams": NeteaseRequest.encode_netease_data(eparams)}
 
@@ -167,6 +162,7 @@ def netease_music_search(title: str, artists: str) -> List[Song]:
                 target_title=title,
                 target_artists=artists,
                 lyric=netease_music_get_lyric(idx=item["id"]),
+                source="Netease"
             )
             songs.append(s)
     return songs

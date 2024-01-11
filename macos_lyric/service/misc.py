@@ -5,7 +5,7 @@ import regex
 import requests
 from bs4 import BeautifulSoup
 
-from touchbar_lyric import Song
+from macos_lyric import Song
 
 UA = "Mozilla/5.0 (Maemo; Linux armv7l; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 Fennec/10.0.1"
 
@@ -43,7 +43,7 @@ def name_comparison(title: str, artists: str, target_title: str, target_artists:
     return preprocess(target_title) in preprocess(title) and preprocess(target_artists) in preprocess(artists)
 
 
-def rentanadviser_music_search(title: str, artists: str) -> List[Song]:
+async def rentanadviser_music_search(title: str, artists: str) -> List[Song]:
     proxy = request.getproxies()
     search_url = f'''https://www.rentanadviser.com/en/subtitles/subtitles4songs.aspx?{
         parse.urlencode({
@@ -91,12 +91,13 @@ def rentanadviser_music_search(title: str, artists: str) -> List[Song]:
                 artists=info,
                 target_title=title,
                 target_artists=artists,
-                lyric=lrc.text
+                lyric=lrc.text,
+                source="rentanadviser"
             )]
     return []
 
 
-def lyricsify_music_search(title: str, artists: str) -> List[Song]:
+async def lyricsify_music_search(title: str, artists: str) -> List[Song]:
     proxy = request.getproxies()
     search_url = f'''https://www.lyricsify.com/search?{
         parse.urlencode({
@@ -136,12 +137,13 @@ def lyricsify_music_search(title: str, artists: str) -> List[Song]:
             artists=name,
             target_title=title,
             target_artists=artists,
-            lyric=lrc
+            lyric=lrc,
+            source="lyricsify"
         )]
     return []
 
 
-def rclyricsband_music_search(title: str, artists: str) -> List[Song]:
+async def rclyricsband_music_search(title: str, artists: str) -> List[Song]:
     proxy = request.getproxies()
     search_results = requests.get(
         "https://rclyricsband.com/", params={"s": "%s %s" % (artists, title)}, proxies=proxy)
@@ -174,12 +176,13 @@ def rclyricsband_music_search(title: str, artists: str) -> List[Song]:
             artists=info,
             target_title=title,
             target_artists=artists,
-            lyric=response.text
+            lyric=response.text,
+            source="rclyricsband"
         )]
     return []
 
 
-def megalobiz_music_search(title: str, artists: str) -> List[Song]:
+async def megalobiz_music_search(title: str, artists: str) -> List[Song]:
     proxy = request.getproxies()
     search_url = "https://www.megalobiz.com/search/all?%s" % parse.urlencode({
         "qry": f"{artists} {title}",
@@ -214,7 +217,8 @@ def megalobiz_music_search(title: str, artists: str) -> List[Song]:
             artists=info,
             target_title=title,
             target_artists=artists,
-            lyric=lrc
+            lyric=lrc,
+            source="megalobiz"
         )]
     return []
 

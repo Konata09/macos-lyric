@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "touchbar-lyric"
-version = "0.8.1"
-description = "Display lyrics on your touchbar with BTT"
+name = "macos-lyric"
+version = "0.9.0"
+description = "Obtain song lyrics on macOS "
 authors = ["Chenghao Mou <mouchenghao@gmail.com>"]
-license = "MIT"
+license = "GPL"
 readme = "README.md"
 
 [tool.poetry.dependencies]

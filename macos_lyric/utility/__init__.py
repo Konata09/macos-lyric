@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2021-03-01 19:51:54
-# @Author  : Chenghao Mou (mouchenghao@gmail.com)
-
 import bisect
 from collections import namedtuple
 from typing import List, Optional
