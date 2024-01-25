@@ -31,8 +31,12 @@ def get_info(app: str) -> Optional[MediaInformation]:
 
     script: str = f"""
     on run
-        if application "{app}" is running then
-            tell application "{app}"
+        if application "Spotify" is running then
+            tell application "Spotify"
+                set currentInfo to {{name of current track, "|||", artist of current track, "|||", player position, "|||", player state, "|||", duration of current track}}
+            end tell
+        else if application "Music" is running then
+            tell application "Music"
                 set currentInfo to {{name of current track, "|||", artist of current track, "|||", player position, "|||", player state, "|||", duration of current track}}
             end tell
         else
